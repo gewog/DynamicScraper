@@ -50,15 +50,18 @@ def get_products_links(url, item) -> list:
         5. Прокручивает страницу для загрузки дополнительных товаров.
         6. Собирает ссылки на товары и возвращает их в виде списка.
     """
-    emt_l = [] # Список для хранения ссылок на товары
+    emt_l = []  # Список для хранения ссылок на товары
     with undetected_chromedriver.Chrome() as uc:
         uc.implicitly_wait(10)  # Устанавливаем неявное ожидание для поиска элементов
         uc.get(url)  # Переход на сайт Ozon
-        time.sleep(2)
+        time.sleep(4)
 
         # Поиск поля ввода и кнопки поиска
-        input_field = uc.find_element(By.CSS_SELECTOR, ".nt9_30.tsBody500Medium")
-        input_button = uc.find_element(By.CLASS_NAME, "ag5_4_2-a")
+        # input_field = uc.find_element(By.CSS_SELECTOR, ".t8n_30.tsBody500Medium")
+        input_field = uc.find_element(By.CSS_SELECTOR, 'input[placeholder="Искать на Ozon"]')
+        print(1)
+        input_button = uc.find_element(By.CSS_SELECTOR, 'button[aria-label="Поиск"]')
+        print(2)
         input_field.clear()  # Очистка поля ввода
         input_field.send_keys(item)  # Ввод данных
         time.sleep(2)
@@ -66,9 +69,7 @@ def get_products_links(url, item) -> list:
         time.sleep(2)
 
         # Выбор категории "Новинки"
-        dropdown_list = uc.find_element(
-            By.CSS_SELECTOR, ".bh55_5_2-b0.tsCompact500Medium.bh55_5_2-a8.bh55_5_2-b3"
-        )
+        dropdown_list = uc.find_element(By.XPATH, "//input[@value='Популярные']")
         dropdown_list.click()
         time.sleep(2)
         res = uc.find_element(By.XPATH, "//span[text()='Новинки']")
@@ -77,14 +78,15 @@ def get_products_links(url, item) -> list:
 
         for el in range(2):
             scroll_func(uc)
-            links = uc.find_elements(
-                By.CSS_SELECTOR, ".q4b1_3_0-a.tile-clickable-element.ri5_24"
-            )
+            links = uc.find_elements(By.CSS_SELECTOR, 'a[href*="/product/"]')
             for el in links:
                 emt_l.append(el.get_attribute("href"))
+
         print("Ссылки на товары собраны")
+        print(emt_l)
 
         uc.quit()  # Завершаем работу
+
     return emt_l
 
 
