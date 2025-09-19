@@ -3,18 +3,16 @@ import json
 import lxml
 import undetected_chromedriver
 from bs4 import BeautifulSoup
+from slugify import slugify
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 
-from fake_useragent import UserAgent
+from cardrobber import get_info_about
 
-agent = UserAgent.random
-
-task_url = "https://www.ozon.ru/"
-item = "шторы"
-
+# task_url = "https://www.ozon.ru/"
+# item = "шторы"
 
 def scroll_func(uc) -> None:
     """
@@ -31,7 +29,7 @@ def scroll_func(uc) -> None:
     time.sleep(2)
 
 
-def get_products_links(url, item) -> list:
+def get_products_links(url = "https://www.ozon.ru/", item = "кукла"):
     """
     Собирает ссылки на товары с сайта Ozon по заданному поисковому запросу.
 
@@ -50,18 +48,17 @@ def get_products_links(url, item) -> list:
         5. Прокручивает страницу для загрузки дополнительных товаров.
         6. Собирает ссылки на товары и возвращает их в виде списка.
     """
-    emt_l = []  # Список для хранения ссылок на товары
+    ml = []
+    emt_d = {}  # Словарь для хранения ссылок на товары
+    unique_set = set()
     with undetected_chromedriver.Chrome() as uc:
         uc.implicitly_wait(10)  # Устанавливаем неявное ожидание для поиска элементов
         uc.get(url)  # Переход на сайт Ozon
         time.sleep(4)
 
         # Поиск поля ввода и кнопки поиска
-        # input_field = uc.find_element(By.CSS_SELECTOR, ".t8n_30.tsBody500Medium")
         input_field = uc.find_element(By.CSS_SELECTOR, 'input[placeholder="Искать на Ozon"]')
-        print(1)
         input_button = uc.find_element(By.CSS_SELECTOR, 'button[aria-label="Поиск"]')
-        print(2)
         input_field.clear()  # Очистка поля ввода
         input_field.send_keys(item)  # Ввод данных
         time.sleep(2)
@@ -76,26 +73,36 @@ def get_products_links(url, item) -> list:
         res.click()
         time.sleep(2)
 
-        for el in range(2):
+        for el in range(1): # Прокрутка, в случае необходимости
             scroll_func(uc)
             links = uc.find_elements(By.CSS_SELECTOR, 'a[href*="/product/"]')
-            for el in links:
-                emt_l.append(el.get_attribute("href"))
+            for el in links[:14]: # Беру срез для упрощения, можно убрать
+                ml.append(el.get_attribute("href"))
+        unique_set = set(ml)
+        for n, el in enumerate(unique_set):
+            emt_d[n] = el
 
         print("Ссылки на товары собраны")
-        print(emt_l)
+
+        with open("products_url.json", "w", encoding="utf-8") as file:
+            json.dump(emt_d, file, indent=4, ensure_ascii= False)
+
+        print("Ссылки на товары сохранены в json")
+
+        return unique_set
 
         uc.quit()  # Завершаем работу
 
-    return emt_l
+def save_products_json(prod_list, item):
+    """Сохраняет список с информацией о товарах в json"""
+    with open(f"about_products_{slugify(item)}.json", "w", encoding="utf-8") as file:
+        json.dump(prod_list, file,indent=4, ensure_ascii=False, )
+    return {"Message": "OK"}
 
-
-# def main():
-#     get_products_links()
 
 if __name__ == "__main__":
     try:
-        # scroll_func(task_url)
-        get_products_links(task_url, item)
+        res = get_info_about(get_products_links())
+        save_products_json(res, "кукла")
     except Exception as e:
         print(e)
