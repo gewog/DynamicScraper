@@ -91,7 +91,8 @@ DynamicScraper/
    {
      "0": "https://www.ozon.ru/product/barbie-1-123456789/",
      "1": "https://www.ozon.ru/product/barbie-2-987654321/"
-   }`
+   }
+   ```
 
 2. **Парсинг информации о товарах:**
 
