@@ -1,50 +1,18 @@
-# Python
-__pycache__/
-*.py[cod]
-*$py.class
-*.so
-.Python
-build/
-develop-eggs/
-dist/
-downloads/
-eggs/
-.eggs/
-lib/
-lib64/
-parts/
-sdist/
-var/
-wheels/
-*.egg-info/
-.installed.cfg
-*.egg
-
-# Virtualenv
 venv/
-.env
-
-# IDE
-.idea/
-.vscode/
+.git/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+.venv/
 *.swp
 *.swo
-
-# Logs
-logs/
-*.log
-
-# System
+*.egg-info/
 .DS_Store
-Thumbs.db
-
-# Git
-.git/
-.gitignore
-.gitmodules
-
-# Docker
-Dockerfile
-.dockerignore
-
+*.log
+*.sqlite
 *.json
+!pyproject.toml
+!poetry.lock
