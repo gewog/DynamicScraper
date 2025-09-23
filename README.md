@@ -84,15 +84,14 @@ DynamicScraper/
    ```
 
 
-### <img src="![img_2.png](img_2.png)https://media.tenor.com/NQtoHKskOY0AAAAi/cute-monster-monster.gif" alt="SmartAdBot" width="35" /> Пример работы
+### 🎬 Пример работы
 1. **Сбор ссылок на товары:**
    Скрипт `main.py` собирает ссылки на товары по запросу (например, "barbie") и сохраняет их в файл `products_barbie_url.json`:
    ```json
    {
      "0": "https://www.ozon.ru/product/barbie-1-123456789/",
      "1": "https://www.ozon.ru/product/barbie-2-987654321/"
-   }
-   ```
+   }`
 
 2. **Парсинг информации о товарах:**
 
