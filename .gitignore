@@ -1,10 +1,5 @@
-
----
-
-### .gitignore
-
-```gitignore
-# Python
+venv/
+.venv/
 __pycache__/
 *.py[cod]
 *$py.class
@@ -24,32 +19,15 @@ var/
 wheels/
 *.egg-info/
 .installed.cfg
-*.egg
-*.json
-MANIFEST
-
-# Virtualenv
-venv/
-.env
-.env.local
-.env.development
-.env.test
-.env.production
-.env.*.local
-
-# Poetry
-poetry.lock
-
-# IDE
-.idea/
-.vscode/
+*.env
+.DS_Store
 *.swp
 *.swo
-
-# Logs
-logs/
 *.log
-
-# System
-.DS_Store
-Thumbs.db
+*.sqlite
+*.json
+!about_products_*.json
+!products_*.json
+!pyproject.toml
+!poetry.lock
+!README.md

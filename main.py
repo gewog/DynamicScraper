@@ -1,3 +1,11 @@
+"""
+Модуль для парсинга товаров с сайта Ozon.
+
+Этот модуль предоставляет функции для сбора ссылок на товары по поисковому запросу,
+а также для сохранения ссылок на/информации о товарах в JSON-файл.
+Используются библиотеки: `selenium`, `undetected_chromedriver`, `BeautifulSoup`, `slugify`.
+"""
+
 import time
 import json
 import lxml
@@ -29,7 +37,7 @@ def scroll_func(uc) -> None:
     time.sleep(2)
 
 
-def get_products_links(url = "https://www.ozon.ru/", item = "кукла"):
+def get_products_links(item, url = "https://www.ozon.ru/"):
     """
     Собирает ссылки на товары с сайта Ozon по заданному поисковому запросу.
 
@@ -48,9 +56,9 @@ def get_products_links(url = "https://www.ozon.ru/", item = "кукла"):
         5. Прокручивает страницу для загрузки дополнительных товаров.
         6. Собирает ссылки на товары и возвращает их в виде списка.
     """
-    ml = []
-    emt_d = {}  # Словарь для хранения ссылок на товары
-    unique_set = set()
+    ml: list[str] = []
+    emt_d: dict[int, str] = {}  # Словарь для хранения ссылок на товары
+    unique_set: set[str] = set()
     with undetected_chromedriver.Chrome() as uc:
         uc.implicitly_wait(10)  # Устанавливаем неявное ожидание для поиска элементов
         uc.get(url)  # Переход на сайт Ozon
@@ -84,7 +92,7 @@ def get_products_links(url = "https://www.ozon.ru/", item = "кукла"):
 
         print("Ссылки на товары собраны")
 
-        with open("products_url.json", "w", encoding="utf-8") as file:
+        with open(f"products_{slugify(item)}_url.json", "w", encoding="utf-8") as file:
             json.dump(emt_d, file, indent=4, ensure_ascii= False)
 
         print("Ссылки на товары сохранены в json")
@@ -93,8 +101,17 @@ def get_products_links(url = "https://www.ozon.ru/", item = "кукла"):
 
         uc.quit()  # Завершаем работу
 
-def save_products_json(prod_list, item):
-    """Сохраняет список с информацией о товарах в json"""
+def save_products_json(prod_list: list[dict], item: str) -> dict[str, str]:
+    """
+    Сохраняет список с информацией о товарах в JSON-файл.
+
+    Аргументы:
+        prod_list (list[dict]): Список словарей с информацией о товарах.
+        item (str): Поисковый запрос, используемый для именования файла.
+
+    Возвращает:
+        dict[str, str]: Сообщение об успешном сохранении.
+    """
     with open(f"about_products_{slugify(item)}.json", "w", encoding="utf-8") as file:
         json.dump(prod_list, file,indent=4, ensure_ascii=False, )
     return {"Message": "OK"}
@@ -102,7 +119,7 @@ def save_products_json(prod_list, item):
 
 if __name__ == "__main__":
     try:
-        res = get_info_about(get_products_links())
-        save_products_json(res, "кукла")
+        res = get_info_about(get_products_links("barbie"))
+        save_products_json(res, "barbie")
     except Exception as e:
         print(e)
