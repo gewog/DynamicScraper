@@ -4,9 +4,6 @@
     <strong>Динамический парсер товаров с Ozon</strong>
   </p>
   <p>
-    <a href="https://github.com/gewoggewog/DynamicScraper/issues">
-      <img src="https://img.shields.io/badge/contributions-welcome-brightgreen.svg" alt="Contributions Welcome">
-    </a>
     <a href="https://opensource.org/licenses/MIT">
       <img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="License: MIT">
     </a>
@@ -87,18 +84,16 @@ DynamicScraper/
    ```
 
 
-### 🎬 Пример работы
-
+### <img src="img.png" width="35" /> Пример работы
 1. **Сбор ссылок на товары:**
-
-
-   Скрипт main.py собирает ссылки на товары по запросу (например, "barbie") и сохраняет их в файл products_barbie_url.json:
-   ```bash
+   Скрипт `main.py` собирает ссылки на товары по запросу (например, "barbie") и сохраняет их в файл `products_barbie_url.json`:
+   ```json
    {
-   "0": "https://www.ozon.ru/product/barbie-1-123456789/",
-   "1": "https://www.ozon.ru/product/barbie-2-987654321/"
-    }
+     "0": "https://www.ozon.ru/product/barbie-1-123456789/",
+     "1": "https://www.ozon.ru/product/barbie-2-987654321/"
+   }
    ```
+
 2. **Парсинг информации о товарах:**
 
 
@@ -121,7 +116,7 @@ DynamicScraper/
 - **[Docker](https://www.docker.com/get-started)** — инструкция по установке.
 
 
-### 📝 Автор
+###  Автор
 gewog  
 📧 gewoggewog@gmail.com
 
